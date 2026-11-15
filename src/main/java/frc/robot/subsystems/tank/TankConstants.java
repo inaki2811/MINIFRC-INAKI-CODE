@@ -13,6 +13,6 @@ public class TankConstants {
     public static final double DEADBAND = 0.05;
     public static final double TURN_SCALE = 1;
     public static final double FORWARD_SCALE = 1;
-    public static int CURRENT_LIMIT;
+    public static final int CURRENT_LIMIT = 40;
 
 }

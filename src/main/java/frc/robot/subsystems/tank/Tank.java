@@ -4,9 +4,17 @@
 
 package frc.robot.subsystems.tank;
 
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive.WheelSpeeds;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
+import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim.KitbotGearing;
+import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim.KitbotMotor;
+import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim.KitbotWheelSize;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -15,10 +23,32 @@ public class Tank extends SubsystemBase {
   private final TankModule leftModule;
   private final TankModule rightModule;
 
+  private final Field2d field = new Field2d();
+
+    private final DifferentialDrivetrainSim driveSim = RobotBase.isSimulation()
+      ? DifferentialDrivetrainSim.createKitbotSim(
+          KitbotMotor.kDualCIMPerSide,
+          KitbotGearing.k10p71,
+          KitbotWheelSize.kSixInch,
+          null)
+      : null;
+
+      private final Sendable driveWidget = new Sendable() {
+    @Override
+    public void initSendable(SendableBuilder builder) {
+      builder.setSmartDashboardType("DifferentialDrive");
+      builder.setActuator(false); 
+      
+      builder.addDoubleProperty("Left Motor Speed", () -> getWheelsSpeeds().left,null);
+      builder.addDoubleProperty("Right Motor Speed", () -> getWheelsSpeeds().right, null);
+    }
+  };
+
   public Tank() {
     leftModule = new TankModule(TankConstants.LEFT_FRONT_ID, TankConstants.LEFT_BACK_ID, TankConstants.LEFT_INVERTED); 
     rightModule = new TankModule(TankConstants.RIGHT_FRONT_ID, TankConstants.RIGHT_BACK_ID, TankConstants.RIGHT_INVERTED); 
 
+    SmartDashboard.putData("Tank/Field", field);
   }
 
   @Override
@@ -50,4 +80,18 @@ public class Tank extends SubsystemBase {
     rightModule.stop();
   }
 
+  @Override
+  public void simulationPeriodic() {
+    WheelSpeeds out = getWheelsSpeeds();
+    double batteryVolts = RobotController.getBatteryVoltage();
+
+    driveSim.setInputs(out.left * batteryVolts, out.right * batteryVolts);
+    driveSim.update(0.02);
+
+    field.setRobotPose(driveSim.getPose());
+
+    SmartDashboard.putNumber("Tank/ Left Vel (m/s)", driveSim.getLeftVelocityMetersPerSecond());
+    SmartDashboard.putNumber("Tank/ Right Vel (m/s)", driveSim.getRightVelocityMetersPerSecond());
+    SmartDashboard.putData("Tank/Drive Widget", driveWidget);
+  }
 }

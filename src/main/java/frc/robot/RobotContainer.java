@@ -26,7 +26,7 @@ public class RobotContainer {
     tank.setDefaultCommand(new DriveJoystick(
       tank,
       () -> -driverController.getLeftY(),
-      () -> -driverController.getLeftX()
+      () -> -driverController.getRightX()
     ));
     configureBindings();
   }

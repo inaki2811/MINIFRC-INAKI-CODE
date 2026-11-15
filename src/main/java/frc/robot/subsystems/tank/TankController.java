@@ -33,8 +33,8 @@ public class TankController {
         SparkMaxConfig followerConfig = new SparkMaxConfig();
         followerConfig.apply(baseConfig).follow(sparkLeader);
 
-        sparkLeader.configure(followerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        sparkFollower.configure(leaderConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        sparkLeader.configure(leaderConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        sparkFollower.configure(followerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 
     public void setVelocity(double leftVelocity) {
