@@ -13,7 +13,7 @@ public class TankController {
     private final SparkMax sparkLeader;
     private final SparkMax sparkFollower;
 
-    public TankController(TankIo io, boolean isInverted) {
+    public TankController(TankIO io, boolean isInverted) {
         this.sparkLeader = io.getSparkFront();
         this.sparkFollower = io.getSparkBack();
 
@@ -37,7 +37,7 @@ public class TankController {
         sparkFollower.configure(followerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 
-    public void setVelocity(double leftVelocity) {
+    public void setOutput(double leftVelocity) {
         sparkLeader.set(leftVelocity);
     }
 

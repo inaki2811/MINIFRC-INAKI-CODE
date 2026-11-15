@@ -4,17 +4,8 @@
 
 package frc.robot.subsystems.tank;
 
-import edu.wpi.first.util.sendable.Sendable;
-import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive.WheelSpeeds;
-import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
-import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim.KitbotGearing;
-import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim.KitbotMotor;
-import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim.KitbotWheelSize;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -32,11 +23,9 @@ public class Tank extends SubsystemBase {
   @Override
   public void periodic() {
     WheelSpeeds applied = getWheelsSpeeds();
-    SmartDashboard.putNumber("Tank/Left output side", getWheelsSpeeds().left);
-    SmartDashboard.putNumber("Tank/Right output side", getWheelsSpeeds().right);
-    SmartDashboard.putNumber("Tank/Left applied speed", applied.left);
-    SmartDashboard.putNumber("Tank/Right applied speed", applied.right);
-    SmartDashboard.putNumber("Tank/Total output speed", (getWheelsSpeeds().left + getWheelsSpeeds().right) / 2.0 );
+    SmartDashboard.putNumber("Tank/Left applied output", applied.left);
+    SmartDashboard.putNumber("Tank/Right applied output", applied.right);
+    SmartDashboard.putNumber("Tank/Total output", (getWheelsSpeeds().left + getWheelsSpeeds().right) / 2.0 );
 
   
   }
@@ -50,7 +39,7 @@ public class Tank extends SubsystemBase {
   }
 
   public WheelSpeeds getWheelsSpeeds() {
-     return new WheelSpeeds(leftModule.getModuleSpeed(), rightModule.getModuleSpeed());
+     return new WheelSpeeds(leftModule.getAppliedOutput(), rightModule.getAppliedOutput());
   }
 
   public void stop() {
