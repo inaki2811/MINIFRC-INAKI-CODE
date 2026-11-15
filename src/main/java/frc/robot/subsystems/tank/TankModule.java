@@ -9,8 +9,6 @@ public class TankModule {
     private final TankIo io;
     private final TankController controller;
 
-    private double lastOutputSpeed = 0.0;
-
     public TankModule(int frontId, int backId, boolean inverted) {
         this.io = new TankIo(frontId, backId);
         this.controller = new TankController(io, inverted);
@@ -24,9 +22,6 @@ public class TankModule {
     }
 
     public double getModuleSpeed() {
-        if (RobotBase.isSimulation()) {
-            return lastOutputSpeed;
-        }
         double frontMotorSpeed = io.getSparkFront().getAppliedOutput();
         double backMotorSpeed = io.getSparkBack().getAppliedOutput();
         return (frontMotorSpeed + backMotorSpeed) / 2.0;
@@ -39,7 +34,6 @@ public class TankModule {
 
     public void setSpeed(double Speed) {
         controller.setVelocity(Speed);
-        lastOutputSpeed = Speed;
     }
 
 
