@@ -13,7 +13,7 @@ public class TankController {
     private final SparkMax sparkLeader;
     private final SparkMax sparkFollower;
 
-    public TankController(TankIO io, boolean isInverted) {
+    public TankController(TankTank io, boolean isInverted) {
         this.sparkLeader = io.getSparkFront();
         this.sparkFollower = io.getSparkBack();
 

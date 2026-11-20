@@ -3,13 +3,13 @@ package frc.robot.subsystems.tank;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
-public class TankIO {
+public class TankTank {
     
     private final SparkMax sparkFront;
     private final SparkMax sparkBack;
 
 
-    public TankIO(int sparkMaxFrontId , int sparkMaxBackId) {
+    public TankTank(int sparkMaxFrontId , int sparkMaxBackId) {
         this.sparkFront = new SparkMax(sparkMaxFrontId, MotorType.kBrushed);
         this.sparkBack = new SparkMax(sparkMaxBackId, MotorType.kBrushed);
 

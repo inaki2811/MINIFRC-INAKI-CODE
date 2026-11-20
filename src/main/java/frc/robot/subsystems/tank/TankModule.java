@@ -6,11 +6,11 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive.WheelSpeeds;
 
 public class TankModule {
     
-    private final TankIO io;
+    private final TankTank io;
     private final TankController controller;
 
     public TankModule(int frontId, int backId, boolean inverted) {
-        this.io = new TankIO(frontId, backId);
+        this.io = new TankTank(frontId, backId);
         this.controller = new TankController(io, inverted);
     }
 
